@@ -182,7 +182,7 @@ export const SiginupPage = () => {
                       style={{ cursor: "pointer", marginLeft: "8px" }}
                       onClick={() => setShowPassword((prev) => !prev)}
                     >
-                      {showPassword ? "🙈" : "👁️"}
+                      {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                     </span>
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" stroke="currentColor" strokeWidth="0.7" className="bi bi-lock" viewBox="0 0 16 16">
@@ -206,7 +206,7 @@ export const SiginupPage = () => {
                       style={{ cursor: "pointer", marginLeft: "8px" }}
                       onClick={() => setShowConfirmPassword((prev) => !prev)}
                     >
-                      {showConfirmPassword ? "🙈" : "👁️"}
+                      {showConfirmPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                     </span>
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" stroke="currentColor" strokeWidth="0.7" className="bi bi-lock" viewBox="0 0 16 16">

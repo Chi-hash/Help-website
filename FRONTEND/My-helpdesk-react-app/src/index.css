@@ -227,6 +227,10 @@ form .div{
   }
 }
 
+.input-logo{
+    display: flex;
+    align-items: center;
+}
 
 
 
