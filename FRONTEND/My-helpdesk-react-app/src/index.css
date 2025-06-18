@@ -15,12 +15,13 @@
 }
 
 /* login page css */
-form{
+ form{
 background-color: #D9D1FF;
 padding: 40px 40px;
 border-radius: 3px;
 text-align: center;
 }
+
 
 .help-logo{
 width: 200px;
@@ -33,7 +34,7 @@ height: 100px;
     padding: 50px 50px;
 }
 
-#loginsection .container{
+ .container{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -58,7 +59,7 @@ form .div{
 
 }
 
-.input-logo input{
+ input{
     height: 35px;
     width: 100%;
     border: none;
@@ -66,6 +67,7 @@ form .div{
     outline: none;
     
 }
+
 .submit{
     width: 150px;
     padding: 7px;
@@ -80,7 +82,6 @@ form .div{
     background-color: #624affbb;
 }
 .account{
-    margin-top: 20px;
     font-size:14px;
 }
 .link{
@@ -112,6 +113,119 @@ form .div{
 }
 
 
+
+
+
 /* signup css */
+#signupsection{
+    width: 100%;
+    height: 100vh;
+    padding: 50px 50px;
+ 
+}
+#signupsection form {
+  padding: 50px;
+  max-width: 800px; 
+  width: 100%;
+  background-color: #D9D1FF;
+  border-radius: 3px;
+}
+
+
+#signupsection form h1{
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+#signupsection .container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+   
+}
+
+#signupsection .form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  
+}
+
+#signupsection input{
+    background-color: white;
+    height: 35px;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+.diff{
+    background-color: transparent;
+    padding: 0px 10px;
+}
+
+#signupsection .diff{
+    height: 35px;
+    width: 300px;
+}
+#signupsection .row {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.signupbutton{
+    width: 250px;
+    padding: 10px;
+}
+.test{
+    width: 300px;
+}
+
+
+
+@media screen and (max-width: 768px) {
+  #signupsection .row {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+  
+  #signupsection .test,
+  #signupsection .diff {
+    width: 100%;
+  }
+
+  #signupsection form {
+    padding: 30px 20px;
+  }
+
+  .signupbutton {
+    width: 100%;
+  }
+}
+
+
+@media screen and (max-width: 480px) {
+  .input-logo {
+    width: 100%;
+  }
+
+  .help-logo {
+    width: 150px;
+    height: auto;
+  }
+
+  #signupsection {
+    padding: 30px 15px;
+  }
+}
+
+
+
+
 
 
