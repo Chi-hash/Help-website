@@ -1,6 +1,99 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9;
-  color: #222;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root{
+    --faded-purple:#D9D1FF;
+    --button-color: #634AFF;
 }
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* login page css */
+form{
+background-color: #D9D1FF;
+padding: 60px 40pxgit add;
+border-radius: 5px;
+text-align: center;
+}
+
+.help-logo{
+width: 200px;
+height: 100px;
+}
+#loginsection{
+    width: 100%;
+    height: 100vh;
+    padding: 50px 30px;
+}
+
+#loginsection .container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+form .div{
+    text-align: left;
+    margin-top: 20px;
+}
+
+.input-logo{
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 0px 20px;
+    border-radius: 5px;
+
+}
+
+.input-logo input{
+    height: 35px;
+    width: 90%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    
+}
+.submit{
+    width: 150px;
+    padding: 5px;
+    margin-top: 20px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+}
+.account{
+    margin-top: 20px;
+}
+.link{
+    color: var(--button-color);
+    text-decoration: none;
+}
+.link:hover{
+    text-decoration: underline;
+}
+@media screen and (max-width: 438px ){
+    .login-text{
+        font-size: 13px;
+    }
+    form{
+        padding: 50px 20px;
+    }
+    #loginsection{
+        padding: 50px 20px;
+    }
+    .no-account{
+        font-size: 13px;
+    }
+    .submit{
+        width: 100%;
+    }
+}
+
+
