@@ -26,10 +26,11 @@ text-align: center;
 width: 200px;
 height: 100px;
 }
+
 #loginsection{
     width: 100%;
     height: 100vh;
-    padding: 50px 30px;
+    padding: 50px 50px;
 }
 
 #loginsection .container{
@@ -43,6 +44,9 @@ form .div{
     margin-top: 20px;
 }
 
+.login{
+    margin-bottom: 40px;
+}
 .input-logo{
     display: flex;
     align-items: center;
@@ -50,6 +54,7 @@ form .div{
     padding: 0px 20px;
     padding-left: 10px;
     border-radius: 3px;
+    width:350px
 
 }
 
@@ -64,7 +69,7 @@ form .div{
 .submit{
     width: 150px;
     padding: 7px;
-    margin-top: 20px;
+    margin-top: 40px;
     background-color: var(--button-color);
     color: white;
     border: none;
@@ -76,6 +81,7 @@ form .div{
 }
 .account{
     margin-top: 20px;
+    font-size:14px;
 }
 .link{
     color: var(--button-color);
@@ -84,7 +90,10 @@ form .div{
 .link:hover{
     text-decoration: underline;
 }
-@media screen and (max-width: 438px ){
+@media screen and (max-width: 453px ){
+    .input-logo{
+        width: 100%;
+    }
     .login-text{
         font-size: 13px;
     }
