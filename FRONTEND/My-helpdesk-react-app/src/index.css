@@ -4,6 +4,7 @@
 :root{
     --faded-purple:#D9D1FF;
     --button-color: #634AFF;
+    --backgrounds: #C4BCFF;
 }
 * {
   padding: 0;
@@ -12,6 +13,7 @@
     font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
+  font-size: 14px;
 }
 
 /* login page css */
@@ -236,3 +238,92 @@ form .div{
 
 
 
+/* left header css */
+#dashboardsection{
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 5px;
+    padding: 5px;
+}
+.header-div{
+    background-color: #C4BCFF;
+    height: 100vh;
+    border-radius: 5px;
+    padding: 20px 15px;
+}
+.topheader-div{
+    background-color: var(--backgrounds);
+    height: 60px;
+    border-radius: 5px;
+}
+.header-div .navs{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.leftheadernav{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 5px 8px;
+    border-radius: 3px;
+       position: relative;
+       cursor: pointer;
+}
+
+.leftheadernav.active {
+  background-color: #634AFF;
+  color: white;
+}
+
+
+
+
+
+
+
+
+.ticket-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding-left: 15px;
+    list-style: none;
+}
+
+.ticket-dropdown.open {
+    max-height: 200px; 
+}
+
+.ticket-dropdown li {
+    margin: 8px 0;
+}
+
+.ticket-dropdown li a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    padding: 5px;
+    display: block;
+    transition: background-color 0.2s;
+}
+
+.ticket-dropdown li a.active {
+    color: white;
+    background-color: #634AFF;
+    border-radius: 3px;
+}
+
+.arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+    transform: rotate(180deg);
+}

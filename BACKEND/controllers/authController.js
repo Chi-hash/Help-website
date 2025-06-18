@@ -69,6 +69,7 @@ export const loginUser = async (req, res) => {
       profilePic: user.profilePic || null,
       user: {
         id: user._id,
+        role: user.role,
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
