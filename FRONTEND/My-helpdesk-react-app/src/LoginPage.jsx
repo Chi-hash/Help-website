@@ -11,6 +11,7 @@ export const LoginPage = () => {
                     <img src={HelpLogo} alt="" className='help-logo' />
                 </div>
                 <form action="#">
+                    <h1>Log In</h1>
                     <div className="emaildiv div">
                         <p className='login-text'>Email Address</p>
                         <div className="email-logo input-logo">

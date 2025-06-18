@@ -17,8 +17,8 @@
 /* login page css */
 form{
 background-color: #D9D1FF;
-padding: 60px 40pxgit add;
-border-radius: 5px;
+padding: 40px 40px;
+border-radius: 3px;
 text-align: center;
 }
 
@@ -48,13 +48,14 @@ form .div{
     align-items: center;
     background-color: white;
     padding: 0px 20px;
-    border-radius: 5px;
+    padding-left: 10px;
+    border-radius: 3px;
 
 }
 
 .input-logo input{
     height: 35px;
-    width: 90%;
+    width: 100%;
     border: none;
     background-color: transparent;
     outline: none;
@@ -62,11 +63,16 @@ form .div{
 }
 .submit{
     width: 150px;
-    padding: 5px;
+    padding: 7px;
     margin-top: 20px;
     background-color: var(--button-color);
     color: white;
     border: none;
+    border-radius: 3px;
+    transition: all ease 0.5s;
+}
+.submit:hover{
+    background-color: #624affbb;
 }
 .account{
     margin-top: 20px;
@@ -95,5 +101,8 @@ form .div{
         width: 100%;
     }
 }
+
+
+/* signup css */
 
 
