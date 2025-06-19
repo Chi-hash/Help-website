@@ -1,0 +1,12 @@
+:root{
+    --faded-purple:#D9D1FF;
+    --button-color: #634AFF;
+    --backgrounds: #C4BCFF;
+    --hover-color:var(--hover-color);
+}
+
+.circle{
+    height: 50px;
+    width: 50px;
+    background-color: var(--faded-purple);
+}

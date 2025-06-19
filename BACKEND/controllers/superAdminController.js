@@ -5,7 +5,7 @@ export const getSuperAdminStats = async (req, res) => {
   try {
     const totalTickets = await Ticket.countDocuments();
     const totalUsers = await User.countDocuments();
-    const totalAdmins = await User.countDocuments({ role: "admin" });
+    const totalAdmins = await User.countDocuments({ role: /admin/i });
     const totalIT = await User.countDocuments({ role: "it" });
     const totalStaff = await User.countDocuments({ role: "staff" });
     const totalSuperAdmins = await User.countDocuments({ role: "superAdmin" });

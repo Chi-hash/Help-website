@@ -30,6 +30,7 @@ export const LoginPage = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       
+console.log("Token being sent:", token);
 
       console.log("User logged in:", user);
 console.log("Redirecting to dashboard:", user.role);

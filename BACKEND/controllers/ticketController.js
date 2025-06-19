@@ -1,17 +1,17 @@
 import Ticket from '../models/ticket.js';
-import User from '../models/user.js'; // Needed to look up the assigned user by name
+import User from '../models/user.js'; 
 
 // Controller to create a ticket
 export const createTicket = async (req, res) => {
   try {
     const {
-      subject,         // Subject of the ticket
-      description,     // Detailed issue
-      status,          // "open", "in progress", "closed"
-      assignedTo,      // This is the name, like "Chioma"
+      subject,         
+      description,     
+      status,         
+      assignedTo,     
     } = req.body;
 
-    // Find the user by name and get their MongoDB _id
+    
     const user = await User.findOne({ name: assignedTo });
     if (!user) {
       return res.status(400).json({ message: 'Assigned user not found' });

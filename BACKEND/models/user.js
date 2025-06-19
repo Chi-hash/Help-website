@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    firstname:{
+    firstname: {
         type: String,
         required: true,
         trim: true,
     },
-    lastname:{
+    lastname: {
         type: String,
         required: true,
         trim: true,
@@ -17,6 +17,18 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         trim: true,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    emailToken: {
+        type: String,
+        default: null
+    },
+    emailTokenExpires: {
+        type: Date,
+        default: null
     },
     password: {
         type: String,
@@ -29,7 +41,7 @@ const userSchema = new mongoose.Schema({
         default: "staff",
     },
 
-    department:{
+    department: {
         type: String,
     },
     status: {
@@ -37,10 +49,10 @@ const userSchema = new mongoose.Schema({
         enum: ["Active", "Suspended"],
         default: "Active",
     },
-     profilePic: {
-    type: String,
-    default: null // Optional field for profile picture URL
-  }
+    profilePic: {
+        type: String,
+        default: null // Optional field for profile picture URL
+    }
 }, {
     timestamps: true,
 });

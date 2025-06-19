@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import {LeftHeader} from "../../LeftHeader";
-import { TopHeader } from '../../TopHeader';
+import { TopHeader } from '../../TopHeader'
+import { LeftHeader } from '../../LeftHeader'
 
-export const StaffDashboard = () => {
+export const Reports = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const toggleSidebar = () => {

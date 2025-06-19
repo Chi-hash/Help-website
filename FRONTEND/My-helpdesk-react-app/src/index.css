@@ -5,7 +5,18 @@
     --faded-purple:#D9D1FF;
     --button-color: #634AFF;
     --backgrounds: #C4BCFF;
+    --hover-color:var(--hover-color);
 }
+
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -239,11 +250,15 @@ form .div{
 
 
 /* left header css */
+li{
+    text-decoration: none;
+    list-style: none;
+}
 #dashboardsection{
     width: 100%;
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 220px 1fr;
     gap: 5px;
     padding: 5px;
 }
@@ -252,13 +267,14 @@ form .div{
     height: 100vh;
     border-radius: 5px;
     padding: 20px 15px;
+    overflow-y: scroll;
 }
 .topheader-div{
     background-color: var(--backgrounds);
     height: 60px;
     border-radius: 5px;
 }
-.header-div .navs{
+.header-div .nav{
     margin-top: 30px;
     display: flex;
     flex-direction: column;
@@ -274,6 +290,7 @@ form .div{
     border-radius: 3px;
        position: relative;
        cursor: pointer;
+       transition: all 0.5s ease;
 }
 
 .leftheadernav.active {
@@ -285,38 +302,205 @@ form .div{
 
 
 
+.leftheadernav {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+}
 
+.leftheadernav:hover{
+    background-color: #624aff50;
+}
 
+.leftheadernav.active {
+  background-color: #634AFF;
+  color: #fff;
+}
+
+.arrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
 
 .ticket-dropdown {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-    padding-left: 15px;
-    list-style: none;
+  max-height: 0;
+  overflow: hidden;
+  padding-left: 20px;
+  margin-top: 4px;
+  transition: max-height 0.3s ease;
 }
 
 .ticket-dropdown.open {
-    max-height: 200px; 
+  max-height: 200px;
 }
 
 .ticket-dropdown li {
-    margin: 8px 0;
+  margin: 4px 0;
+  transition: all 0.5s ease;
+}
+
+.ticket-dropdown li:hover{
+background-color: #624aff64;
 }
 
 .ticket-dropdown li a {
-    text-decoration: none;
-    color: black;
-    font-size: 14px;
-    padding: 5px;
-    display: block;
-    transition: background-color 0.2s;
+  display: block;
+  padding: 4px 8px;
+  text-decoration: none;
+  color: black;
+  border-radius: 4px;
 }
 
 .ticket-dropdown li a.active {
-    color: white;
-    background-color: #634AFF;
+  background-color: #634AFF;
+  color: white;
+}
+.manageticketp{
+    display: flex;
+    align-items: center;
+   gap: 15px;
+}
+.dont{
+    margin-top: 20px;
+}
+
+/* .menu-toggle{
+    position: relative;
+    left:40px;
+    background-color: red;
+    z-index: 9999999;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* left header css */
+li {
+    text-decoration: none;
+    list-style: none;
+}
+
+#dashboardsection {
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 5px;
+    padding: 5px; /* Restored for floating effect */
+    transition: grid-template-columns 0.3s ease;
+    box-sizing: border-box;
+}
+
+#dashboardsection.sidebar-collapsed {
+    grid-template-columns: 0 1fr;
+}
+
+.header-div {
+    background-color: #C4BCFF;
+    height: 100vh;
+    border-radius: 5px;
+    padding: 20px 15px;
+    overflow-y: scroll;
+    position: fixed;
+    top: 5px; /* Adjusted to align with padding for floating effect */
+    left: 5px; /* Adjusted to align with padding for floating effect */
+    width: 220px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.header-div.collapsed {
+    transform: translateX(-230px); /* Adjusted for padding offset */
+}
+
+.header-div.open {
+    transform: translateX(0);
+}
+
+.menu-toggle {
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0; /* Match header-div border-radius */
+    position: fixed;
+    top: 5px; /* Align with padding */
+    right: 5px; /* Align with padding */
+    z-index: 2000;
+    width: 44px; /* Fixed width for hamburger icon */
+}
+
+#dashboardsection.sidebar-collapsed .menu-toggle {
+    display: block;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.topheader-div {
+    background-color: var(--backgrounds);
+    height: 60px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 5px 5px 0; /* Match padding for floating effect */
+}
+
+/* .right {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+} */
+
+.header-div .nav {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.leftheadernav {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 5px 8px;
     border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.leftheadernav:hover {
+    background-color: #624aff50;
+}
+
+.leftheadernav.active {
+    background-color: #634AFF;
+    color: white;
 }
 
 .arrow {
@@ -327,3 +511,114 @@ form .div{
 .arrow.rotate {
     transform: rotate(180deg);
 }
+
+.ticket-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    padding-left: 20px;
+    margin-top: 4px;
+    transition: max-height 0.3s ease;
+}
+
+.ticket-dropdown.open {
+    max-height: 200px;
+}
+
+.ticket-dropdown li {
+    margin: 4px 0;
+    transition: all 0.5s ease;
+}
+
+.ticket-dropdown li:hover {
+    background-color: #624aff64;
+}
+
+.ticket-dropdown li a {
+    display: block;
+    padding: 4px 8px;
+    text-decoration: none;
+    color: black;
+    border-radius: 4px;
+}
+
+.ticket-dropdown li a.active {
+    background-color: #634AFF;
+    color: white;
+}
+
+.manageticketp {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dont {
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    #dashboardsection {
+        grid-template-columns: 180px 1fr;
+        padding: 5px;
+    }
+    .header-div {
+        width: 180px;
+        top: 5px;
+        left: 5px;
+    }
+    .header-div.collapsed {
+        transform: translateX(-190px); /* Adjusted for smaller width */
+    }
+    .menu-toggle {
+        top: 5px;
+        left: 5px;
+    }
+    .topheader-div {
+        margin: 0 5px 5px 0;
+    }
+}
+
+
+
+/* top header */
+.topheader-div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+
+}
+.topheader-div .blank-profile{
+    width: 40px;
+    height: 40px;
+    background-color: #634AFF;
+    border-radius: 50%;
+}
+
+.topheader-div .right{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* css for resending token */
+.verify-notice button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

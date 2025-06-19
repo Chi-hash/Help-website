@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import HelpLogo from "./assets/HELPLOGO.svg";
 import { Eye, EyeOff } from "lucide-react";
+import { useEffect } from 'react';
 
 
 export const SiginupPage = () => {
@@ -27,6 +28,11 @@ export const SiginupPage = () => {
     special: false,
   });
 
+  useEffect(() => {
+    if (formData.password) {
+      validatePassword(formData.password);
+    }
+  }, [formData.password]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,21 +74,22 @@ export const SiginupPage = () => {
       return setError('Passwords do not match');
     }
 
+    const allValid = Object.values(passwordValidations).every(Boolean);
+    if (!allValid) {
+      return setError("Password doesn't meet all requirements");
+    }
+
     try {
       const res = await axios.post('http://localhost:3000/api/auth/signup', formData);
       if (res.status === 201) {
-        alert(" signup successfull");
-        navigate('/');
+        alert("Signup successful");
+        navigate("/verify-notice");
       }
-      const allValid = Object.values(passwordValidations).every(Boolean);
-      if (!allValid) {
-        return setError("Password doesn't meet all requirements");
-      }
-
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong');
     }
   };
+
 
   const [passwordMatch, setPasswordMatch] = useState(null); // null = untouched, true = match, false = no match
   const [showPassword, setShowPassword] = useState(false);
@@ -245,7 +252,13 @@ export const SiginupPage = () => {
                 </div>
               </div>
 
-              <button className='submit signupbutton'>Sign Up</button>
+              <button
+                className='submit signupbutton'
+                disabled={!Object.values(passwordValidations).every(Boolean) || !passwordMatch}
+              >
+                Sign Up
+              </button>
+
               <p className='no-account account'>Already have an account? <Link to="/" className='link'>Log in</Link> </p>
             </div>
           </form>

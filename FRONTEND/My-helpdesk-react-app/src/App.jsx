@@ -11,6 +11,10 @@ import {ManageUsers} from './Components/Superadmin/ManageUsers'
 import { MyTickets } from './Components/Superadmin/MyTickets';
 import { AllTickets } from './Components/Superadmin/AllTickets';
 import { TicketNotes } from './Components/Superadmin/TicketNotes';
+import { CreateTicket } from './Components/Superadmin/CreateTicket';
+import { Reports } from './Components/Superadmin/Reports';
+import VerifyNotice from './VerifyNotice';
+import VerifyEmail from './VerifyEmail';
 
 function App() {
   return (
@@ -24,9 +28,13 @@ function App() {
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path='/manage-admins' element = {<ManageAdmins/>}></Route>
         <Route path='/manage-users' element = {<ManageUsers/>}></Route>
-        <Route Path = "/manage-tickets/my-tickets" element = {<MyTickets/>}></Route>
+        <Route path = "/manage-tickets/my-tickets" element = {<MyTickets/>}></Route>
         <Route path='/manage-tickets/all-tickets' element = {<AllTickets/>}></Route>
         <Route path='/manage-tickets/ticket-notes' element = {<TicketNotes/>}></Route>
+        <Route path='/manage-tickets/create-ticket' element = {<CreateTicket/>}></Route>
+        <Route path='/reports' element = {<Reports/>}></Route>
+        <Route path='/verify-notice' element ={<VerifyNotice/>}></Route>
+        <Route path='/verify-email' element ={<VerifyEmail/>}></Route>
       </Routes>
     </BrowserRouter>
   );
