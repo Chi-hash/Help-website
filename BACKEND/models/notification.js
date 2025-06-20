@@ -6,6 +6,7 @@ const notificationSchema = new mongoose.Schema(
     message: String,
     type: String, // e.g. "ticket", "user", "role-change"
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ticketId: { type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }, // Link to ticket
     seenBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     roleVisibleTo: [String], // e.g. ['superAdmin', 'admin']
     readBy: [

@@ -2,6 +2,7 @@
 import Ticket from '../models/ticket.js';
 import Notification from '../models/notification.js';
 import User from '../models/user.js';
+import Counter from '../models/counter.js';
 import { createNotification } from '../notify.js';
 
 // Generate ticket number
@@ -20,7 +21,6 @@ export const createTicket = async (req, res) => {
       assignedTo,
     } = req.body;
 
-
     const user = await User.findOne({ name: assignedTo });
     if (!user) {
       return res.status(400).json({ message: 'Assigned user not found' });
@@ -29,7 +29,7 @@ export const createTicket = async (req, res) => {
     // Get file paths of uploaded attachments
     const attachmentPaths = req.files?.map((file) => file.path) || [];
 
-    //  Create a new ticket
+    // Create a new ticket
     let counter = await Counter.findOne({ name: "ticket" });
     if (!counter) {
       counter = await Counter.create({ name: "ticket", value: 1 });
@@ -40,7 +40,6 @@ export const createTicket = async (req, res) => {
 
     const formattedNumber = `#${counter.value.toString().padStart(3, "0")}`;
 
-
     const ticket = new Ticket({
       subject,
       description,
@@ -49,37 +48,44 @@ export const createTicket = async (req, res) => {
       assignedTo: user._id,
       attachments: attachmentPaths,
       ticketNumber: formattedNumber,
-
     });
 
-    //Save to MongoDB
+    // Save to MongoDB
     await ticket.save();
 
-
-
-    // To the staff themselves
+    // Notification to the ticket creator (themselves)
     await createNotification({
       message: `You created a new ticket ${formattedNumber}: ${subject}`,
       type: "ticket",
       createdBy: req.user._id,
       ticketId: ticket._id,
-      roleVisibleTo: [user.role],
+      roleVisibleTo: [req.user.role],
+      specificUsers: [req.user._id], // Send email to the creator
       link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
     });
 
-    // To admins, IT, superAdmin
+    // Notification to the assigned user
+    await createNotification({
+      message: `You have been assigned ticket ${formattedNumber}: ${subject}`,
+      type: "assignment",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: [user.role],
+      specificUsers: [user._id], // Send email to the assigned user
+      link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+    });
+
+    // Notification to admins, IT, superAdmin (for monitoring)
     await createNotification({
       message: `New ticket ${formattedNumber} created by ${req.user.firstname} ${req.user.lastname}`,
       type: "ticket",
       createdBy: req.user._id,
       ticketId: ticket._id,
       roleVisibleTo: ["admin", "IT", "superAdmin"],
-       link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
+      link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
     });
 
-
     // Respond with the new ticket
-
     res.status(201).json({
       message: 'Ticket created with attachments',
       ticket,
@@ -91,18 +97,6 @@ export const createTicket = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 export const assignTicket = async (req, res) => {
   try {
     const { ticketId, assignedTo } = req.body;
@@ -111,6 +105,7 @@ export const assignTicket = async (req, res) => {
     const ticket = await Ticket.findById(ticketId);
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
 
+    const oldAssignee = ticket.assignedTo;
     ticket.assignedTo = assignedTo;
     ticket.status = 'Assigned';
     await ticket.save();
@@ -118,8 +113,36 @@ export const assignTicket = async (req, res) => {
     const assigner = await User.findById(assignedBy);
     const assignee = await User.findById(assignedTo);
 
-    await Notification.create({
-      message: `Ticket ${ticket.ticketNumber} has been assigned to ${assignedUser.firstname} ${assignedUser.lastname}`,
+    // Notification to the new assignee
+    await createNotification({
+      message: `You have been assigned ticket ${ticket.ticketNumber}: ${ticket.subject}`,
+      type: "assignment",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: [assignee.role],
+      specificUsers: [assignee._id], // Send email to the new assignee
+      link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+    });
+
+    // Notification to the previous assignee (if different)
+    if (oldAssignee && oldAssignee.toString() !== assignedTo.toString()) {
+      const oldAssigneeUser = await User.findById(oldAssignee);
+      if (oldAssigneeUser) {
+        await createNotification({
+          message: `Ticket ${ticket.ticketNumber} has been reassigned from you to ${assignee.firstname} ${assignee.lastname}`,
+          type: "assignment",
+          createdBy: req.user._id,
+          ticketId: ticket._id,
+          roleVisibleTo: [oldAssigneeUser.role],
+          specificUsers: [oldAssigneeUser._id], // Send email to the old assignee
+          link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+        });
+      }
+    }
+
+    // Notification to admins, IT, superAdmin (for monitoring)
+    await createNotification({
+      message: `Ticket ${ticket.ticketNumber} has been assigned to ${assignee.firstname} ${assignee.lastname}`,
       type: "assignment",
       createdBy: req.user._id,
       ticketId: ticket._id,
@@ -134,17 +157,12 @@ export const assignTicket = async (req, res) => {
   }
 };
 
-
-
-
-
-
 export const closeTicket = async (req, res) => {
   try {
     const { ticketId } = req.params;
     const userId = req.user._id;
 
-    const ticket = await Ticket.findById(ticketId);
+    const ticket = await Ticket.findById(ticketId).populate('createdBy');
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
 
     ticket.status = 'Closed';
@@ -152,24 +170,53 @@ export const closeTicket = async (req, res) => {
 
     const user = await User.findById(userId);
 
+    // Notification to the person who closed the ticket (themselves)
     await createNotification({
-  message: `Ticket ${ticket.ticketNumber} has been closed by ${req.user.firstname} ${req.user.lastname}`,
-  type: "ticket-close",
-  createdBy: req.user._id,
-  ticketId: ticket._id,
-  roleVisibleTo: ["admin", "IT", "superAdmin", ticket.createdBy.Role],
-  link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
-});
-
-await createNotification({
-      message: `You closed ticket ${ticket.ticketNumber} `,
+      message: `You closed ticket ${ticket.ticketNumber}`,
       type: "ticket-close",
       createdBy: req.user._id,
       ticketId: ticket._id,
       roleVisibleTo: [req.user.role], 
+      specificUsers: [req.user._id], // Send email to the person who closed it
       link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
     });
 
+    // Notification to the ticket creator (if different from who closed it)
+    if (ticket.createdBy._id.toString() !== req.user._id.toString()) {
+      await createNotification({
+        message: `Your ticket ${ticket.ticketNumber} has been closed by ${req.user.firstname} ${req.user.lastname}`,
+        type: "ticket-close",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: [ticket.createdBy.role],
+        specificUsers: [ticket.createdBy._id], // Send email to the ticket creator
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to the assigned user (if different from who closed it and from creator)
+    if (ticket.assignedTo.toString() !== req.user._id.toString() && 
+        ticket.assignedTo.toString() !== ticket.createdBy._id.toString()) {
+      await createNotification({
+        message: `Ticket ${ticket.ticketNumber} has been closed by ${req.user.firstname} ${req.user.lastname}`,
+        type: "ticket-close",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: ["admin", "IT", "superAdmin"],
+        specificUsers: [ticket.assignedTo], // Send email to the assigned user
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to admins, IT, superAdmin (for monitoring)
+    await createNotification({
+      message: `Ticket ${ticket.ticketNumber} has been closed by ${req.user.firstname} ${req.user.lastname}`,
+      type: "ticket-close",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: ["admin", "IT", "superAdmin"],
+      link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
+    });
 
     res.status(200).json({ message: 'Ticket closed successfully' });
   } catch (error) {
@@ -177,11 +224,6 @@ await createNotification({
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
-
-
-
 
 export const updateTicketStatus = async (req, res) => {
   try {
@@ -196,23 +238,52 @@ export const updateTicketStatus = async (req, res) => {
 
     const user = await User.findById(userId);
 
-    await Notification.create({
-      message: `Ticket ${ticket.ticketNumber} status changed to ${ticket.status} by ${req.user.firstname} ${req.user.lastname}`,
-      type: "status-change",
-      createdBy: req.user._id,
-      ticketId: ticket._id,
-      roleVisibleTo: ["admin", "IT", "superAdmin", ticket.createdBy.Role], // Replace with actual roles
-      link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
-    });
-
-
+    // Notification to the person who changed the status (themselves)
     await createNotification({
       message: `You changed status of ticket ${ticket.ticketNumber} to ${ticket.status}`,
       type: "status-change",
       createdBy: req.user._id,
       ticketId: ticket._id,
-      roleVisibleTo: [req.user.role], // likely "staff"
+      roleVisibleTo: [req.user.role],
+      specificUsers: [req.user._id], // Send email to the person who changed status
       link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+    });
+
+    // Notification to the ticket creator (if different from who changed status)
+    if (ticket.createdBy._id.toString() !== req.user._id.toString()) {
+      await createNotification({
+        message: `Your ticket ${ticket.ticketNumber} status changed to ${ticket.status} by ${req.user.firstname} ${req.user.lastname}`,
+        type: "status-change",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: [ticket.createdBy.role],
+        specificUsers: [ticket.createdBy._id], // Send email to the ticket creator
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to the assigned user (if different from who changed status and from creator)
+    if (ticket.assignedTo.toString() !== req.user._id.toString() && 
+        ticket.assignedTo.toString() !== ticket.createdBy._id.toString()) {
+      await createNotification({
+        message: `Ticket ${ticket.ticketNumber} status changed to ${ticket.status} by ${req.user.firstname} ${req.user.lastname}`,
+        type: "status-change",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: ["admin", "IT", "superAdmin"],
+        specificUsers: [ticket.assignedTo], // Send email to the assigned user
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to admins, IT, superAdmin (for monitoring)
+    await createNotification({
+      message: `Ticket ${ticket.ticketNumber} status changed to ${ticket.status} by ${req.user.firstname} ${req.user.lastname}`,
+      type: "status-change",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: ["admin", "IT", "superAdmin"],
+      link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
     });
 
     res.status(200).json({ message: 'Ticket status updated', ticket });
@@ -221,13 +292,6 @@ export const updateTicketStatus = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
-
-
-
-
-
 
 export const getAllTickets = async (req, res) => {
   try {
