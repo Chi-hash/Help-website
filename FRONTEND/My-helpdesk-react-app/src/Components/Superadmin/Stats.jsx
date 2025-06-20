@@ -5,29 +5,36 @@ import { TotalUsers } from '../StatInfo/TotalUsers';
 import { TotalAdmins } from '../StatInfo/TotalAdmins';
 import { TotalDepartments } from '../StatInfo/TotalDepartments';
 import { TotalTickets } from '../StatInfo/TotalTickets';
+import { getAuthToken, handleAuthError } from '../../utils/auth.js';
 
 export const Stats = () => {
   const [stats, setStats] = useState(null);
 
-  console.log("Raw localStorage user:", localStorage.getItem("user"));
-  const token = JSON.parse(localStorage.getItem("user") || "{}")?.token;
-  console.log(token);
+  const token = getAuthToken();
+  
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        if (!token) {
+          return;
+        }
+        
         const res = await fetch("/api/superadmin/superAdmin-Dashboard", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        
+        if (handleAuthError(res)) {
+          return; // Auth error was handled
+        }
+        
         const data = await res.json();
         if (data.success) {
           setStats(data.data);
-        } else {
-          console.error("Failed to load stats");
         }
       } catch (err) {
-        console.error("Dashboard error:", err);
+        // Handle error silently
       }
     };
 
@@ -35,7 +42,7 @@ export const Stats = () => {
   }, [token]);
 
   if (!stats) return <p>Loading stats...</p>;
-  console.log("Stats:", stats);
+  
   return (
     <>
      <div className="allstats">

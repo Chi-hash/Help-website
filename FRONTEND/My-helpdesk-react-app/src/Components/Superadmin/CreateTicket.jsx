@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LeftHeader } from '../../LeftHeader'
 import { TopHeader } from '../../TopHeader'
 
 export const CreateTicket = () => {
-   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
-
     return (
-        <section id="dashboardsection" className={isSidebarOpen ? '' : 'sidebar-collapsed'}>
+        <section id="dashboardsection">
             <div className="left">
-                <LeftHeader isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+                <LeftHeader />
             </div>
             <div className="right">
                 <TopHeader />

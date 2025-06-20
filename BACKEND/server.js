@@ -51,8 +51,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path} - ${new Date().toISOString()}`);
+  next();
+});
+
 app.get("/", (req, res) => {
     res.send("Hello ,server is running");
+});
+
+// Test endpoint to verify user routes
+app.get("/api/users/test", (req, res) => {
+    res.json({ message: "User routes are accessible!" });
+});
+
+// Test endpoint to verify superadmin routes
+app.get("/api/superadmin/test", (req, res) => {
+    res.json({ message: "Superadmin routes are accessible!" });
 });
 
 // Add a debug endpoint to check environment variables

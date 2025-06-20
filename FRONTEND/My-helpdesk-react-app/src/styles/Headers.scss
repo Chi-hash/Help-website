@@ -1,4 +1,3 @@
-
 /* Header + Sidebar */
 @mixin flex-center{
   display: flex;
@@ -50,15 +49,84 @@ li{
   height: 60px;
   border-radius: 5px;
   width: 100%;
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
   padding: 10px 20px;
+  position: relative;
 }
+
+.topheader-div .left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
 .welcome-message{
     font-size: 20px;
     font-weight: 500;
+}
+
+.topheader-div .right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 1rem !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+}
+
+.role-badge {
+  background: var(--button-color) !important;
+  color: white !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 20px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+
+.profile-container {
+  cursor: pointer !important;
+  position: relative !important;
+  transition: transform 0.2s !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.profile-container:hover {
+  transform: scale(1.05) !important;
+}
+
+.profile-picture {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 2px solid var(--button-color) !important;
+  flex-shrink: 0 !important;
+}
+
+.profile-initials {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: var(--button-color) !important;
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  border: 2px solid var(--button-color) !important;
+  flex-shrink: 0 !important;
 }
 
 .topheader-div .blank-profile {
@@ -66,12 +134,6 @@ li{
   height: 40px;
   background-color: var(--button-color);
   border-radius: 50%;
-}
-
-.topheader-div .right {
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
 
 .header-div .nav {

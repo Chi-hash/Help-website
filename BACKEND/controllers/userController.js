@@ -14,8 +14,25 @@ export const uploadProfilePic = async (req, res) => {
     const userId = req.user._id;
     const file = req.file;
 
+    if (!userId) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
     if (!file) {
       return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    // Validate file type
+    if (!file.mimetype.startsWith('image/')) {
+      fs.unlinkSync(file.path); // Clean up temp file
+      return res.status(400).json({ message: 'Only image files are allowed' });
+    }
+
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      fs.unlinkSync(file.path); // Clean up temp file
+      return res.status(400).json({ message: 'File size must be less than 5MB' });
     }
 
     const fileBuffer = fs.readFileSync(file.path);
@@ -28,19 +45,37 @@ export const uploadProfilePic = async (req, res) => {
       { new: true, select: '-password' }
     );
 
-    fs.unlinkSync(file.path); // Clean up temp file
+    // Clean up temp file
+    fs.unlinkSync(file.path);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.status(200).json({ profilePic: user.profilePic });
+    res.status(200).json({ 
+      success: true,
+      profilePic: user.profilePic,
+      message: 'Profile picture uploaded successfully'
+    });
   } catch (error) {
     console.error('Error uploading profile picture:', error.message);
-    res.status(500).json({ message: 'Server error' });
+    
+    // Clean up temp file if it exists
+    if (req.file && req.file.path) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (cleanupError) {
+        console.error('Error cleaning up temp file:', cleanupError);
+      }
+    }
+    
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error while uploading profile picture',
+      error: error.message 
+    });
   }
 };
-
 
 export const getAllUsers = async (req, res) => {
   try {

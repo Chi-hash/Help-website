@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TopHeader } from '../../TopHeader'
 import { LeftHeader } from '../../LeftHeader'
 
 export const Reports = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
-
     return (
-        <section id="dashboardsection" className={isSidebarOpen ? '' : 'sidebar-collapsed'}>
+        <section id="dashboardsection">
             <div className="left">
-                <LeftHeader isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+                <LeftHeader />
             </div>
             <div className="right">
                 <TopHeader />
