@@ -9,6 +9,7 @@ import upload from "./middlewares/uploads.js";
 import superAdminRoutes from "./routes/superAdmin.js";
 import adminsRouter from "./routes/admin.js";
 import userRoutes from "./routes/userRoutes.js"
+import messageRoutes from "./routes/message.js";
 
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -46,6 +47,9 @@ app.use("/api/superadmin", superAdminRoutes);
 app.use("/api/admins", adminsRouter);
 
 app.use('/api/users', userRoutes);
+
+app.use("/api/messages", messageRoutes);
+
 
 
 

@@ -5,6 +5,8 @@ import Notification from "../models/notification.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { sendEmail } from "../mailer.js";
+import { createNotification } from "../notify.js";
+
 
 
 // === REGISTER (SIGNUP) ===
@@ -22,7 +24,7 @@ export const registerUser = async (req, res) => {
 
     const emailToken = crypto.randomBytes(32).toString("hex");
     const tokenExpiry = Date.now() + 1000 * 60 * 60; // 1 hour
-   
+
     const newUser = new User({
       firstname,
       lastname,
@@ -35,6 +37,13 @@ export const registerUser = async (req, res) => {
     });
 
     await newUser.save();
+    await createNotification({
+      message: `New user ${firstname} ${lastname} signed up.`,
+      type: "registration",
+      createdBy: newUser._id,
+      roleVisibleTo: ["superAdmin"],
+    });
+
 
     // Send verification email
     const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${emailToken}&email=${newUser.email}`;
@@ -58,13 +67,7 @@ export const registerUser = async (req, res) => {
       `,
     });
 
- 
-    await Notification.create({
-      message: `New user ${firstname} ${lastname} registered.`,
-      type: "registration",
-      createdBy: newUser._id,
-      roleVisibleTo: ["superAdmin"],
-    });
+
 
     res.status(201).json({ message: 'Registration successful. Please verify your email.' });
   } catch (error) {
@@ -79,44 +82,44 @@ export const registerUser = async (req, res) => {
 
 
 export const verifyEmail = async (req, res) => {
- const { token, email } = req.query;
-console.log("Raw query params:", req.query);
-console.log("Token length:", token?.length);
-console.log("Email format:", email);
-   
+  const { token, email } = req.query;
+  console.log("Raw query params:", req.query);
+  console.log("Token length:", token?.length);
+  console.log("Email format:", email);
 
-    try {
-        console.log(" Incoming verification request:", { email, token });
 
-        const user = await User.findOne({ email, emailToken: token });
+  try {
+    console.log(" Incoming verification request:", { email, token });
 
-        if (!user) {
-            console.log('User not found for email:', email);
-            return res.status(400).json({ message: "Invalid verification link." });
-        }
-        
+    const user = await User.findOne({ email, emailToken: token });
 
-        if (user.isVerified) {
-            console.log('User already verified:', email);
-            return res.status(200).json({ message: "Email already verified. Please log in." });
-        }
-
-        if (!user.emailToken || user.emailToken !== token || user.emailTokenExpires < Date.now()) {
-            console.log('Invalid or expired token for user:', { email, token, expires: user.emailTokenExpires });
-            return res.status(400).json({ message: "Invalid or expired verification link." });
-        }
-
-        user.isVerified = true;
-        user.emailToken = null;
-        user.emailTokenExpires = null;
-        await user.save();
-
-        console.log("✅ User verified:", user.email);
-        res.status(200).json({ message: "Email successfully verified. You can now log in." });
-    } catch (error) {
-        console.error("❌ Error during email verification:", error.message);
-        res.status(500).json({ message: "Something went wrong during verification." });
+    if (!user) {
+      console.log('User not found for email:', email);
+      return res.status(400).json({ message: "Invalid verification link." });
     }
+
+
+    if (user.isVerified) {
+      console.log('User already verified:', email);
+      return res.status(200).json({ message: "Email already verified. Please log in." });
+    }
+
+    if (!user.emailToken || user.emailToken !== token || user.emailTokenExpires < Date.now()) {
+      console.log('Invalid or expired token for user:', { email, token, expires: user.emailTokenExpires });
+      return res.status(400).json({ message: "Invalid or expired verification link." });
+    }
+
+    user.isVerified = true;
+    user.emailToken = null;
+    user.emailTokenExpires = null;
+    await user.save();
+
+    console.log("✅ User verified:", user.email);
+    res.status(200).json({ message: "Email successfully verified. You can now log in." });
+  } catch (error) {
+    console.error("❌ Error during email verification:", error.message);
+    res.status(500).json({ message: "Something went wrong during verification." });
+  }
 };
 
 // === LOGIN ===
@@ -143,7 +146,7 @@ export const loginUser = async (req, res) => {
     }
 
 
-    
+
     const token = jwt.sign(
       {
         _id: user._id,
@@ -179,7 +182,7 @@ export const loginUser = async (req, res) => {
         email: user.email,
         department: user.department,
         profilePic: user.profilePic || null,
-         isVerified: user.isVerified
+        isVerified: user.isVerified
       }
     });
   } catch (error) {
@@ -206,14 +209,14 @@ export const resendVerificationEmail = async (req, res) => {
     });
 
     user.emailToken = crypto.randomBytes(32).toString("hex");
-user.emailTokenExpires = Date.now() + 1000 * 60 * 60; 
-await user.save();
+    user.emailTokenExpires = Date.now() + 1000 * 60 * 60;
+    await user.save();
 
-const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${user.emailToken}&email=${user.email}`;
-await sendEmail({
-  to: user.email,
-  subject: "Verify Your Email",
-  html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email. Link expires in 1 hour.</p>`,
+    const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${user.emailToken}&email=${user.email}`;
+    await sendEmail({
+      to: user.email,
+      subject: "Verify Your Email",
+      html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email. Link expires in 1 hour.</p>`,
     });
 
     res.status(200).json({ message: "Verification email resent" });

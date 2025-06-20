@@ -1,6 +1,10 @@
 import Ticket from "../models/ticket.js";
 import User from "../models/user.js";
 
+
+
+
+
 export const getSuperAdminStats = async (req, res) => {
   try {
     const totalTickets = await Ticket.countDocuments();
@@ -35,3 +39,5 @@ export const getSuperAdminStats = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+

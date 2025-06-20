@@ -1,9 +1,34 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from "../../My-helpdesk-react-app/src/assets/HELPLOGO.svg";
+import { motion, AnimatePresence } from 'framer-motion';
+import logouticon from "./assets/logouticon.svg"
+import { LogOutIcon } from 'lucide-react';
+import  "./styles/Headers.scss"
+
 
 
 export const LeftHeader = ({ isOpen, toggleSidebar }) => {
+
+  
+   
+    const navigate = useNavigate();
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  
+
+    const handleLogout = () => {
+        setIsLoggingOut(true);
+        // Perform logout operations
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        
+        setTimeout(() => {
+            navigate('/');
+            setShowLogoutModal(false);
+        }, 1000);
+    };
 
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
     const role = userData.role || "Guest";
@@ -14,16 +39,18 @@ export const LeftHeader = ({ isOpen, toggleSidebar }) => {
     const isTicketsActive = location.pathname.startsWith('/manage-tickets');
 
     return (
-        <div className={`header-div ${isOpen ? 'open' : 'collapsed'}`}>
-            <div className="menu-toggle" onClick={toggleSidebar}>
+        <>
+         <div className='header-div'>
+            {/* <div className="menu-toggle">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
                 </svg>
-            </div>
+            </div> */}
             <div className="header-content">
-                <img src={logo} alt="Help Desk Logo" style={{ width: "150px" }} />
+               
 
                 <div className="navs">
+                     <img src={logo} alt="Help Desk Logo" style={{ width: "150px" }} />
                     <div className="nav">
                         <NavLink className="leftheadernav" to={"/super-admin-dashboard"}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-layout-text-window-reverse" viewBox="0 0 16 16">
@@ -87,10 +114,42 @@ export const LeftHeader = ({ isOpen, toggleSidebar }) => {
                        )}
                         <li><NavLink to="/manage-tickets/create-ticket">Create Ticket</NavLink></li>
                     </ul>
+                 
 
-                    <button className='logoutbutton' Logout>Log Out</button>
+
+           
+                  
                 </div>
+                       <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
+      <LogOutIcon size={16} style={{ marginRight: "8px" }} />
+      Logout
+    </button>
             </div>
+            
         </div>
+        
+          <AnimatePresence>
+  {showLogoutModal && (
+    <motion.div
+      className="logout-modal"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="modal-content">
+        <p>Are you sure you want to logout?</p>
+        <div className="modal-buttons">
+          <button onClick={handleLogout} disabled={isLoggingOut}>
+            {isLoggingOut ? "Logging out..." : "Yes, Logout"}
+          </button>
+          <button onClick={() => setShowLogoutModal(false)}>Cancel</button>
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
+        
+        </>
     );
 };

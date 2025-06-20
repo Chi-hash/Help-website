@@ -6,7 +6,7 @@ export const TotalTickets = ({totalTickets}) => {
   return (
    <div className="stat">
        <div className="circle iconcircle">
-        <img src={TicketLogo} alt="" />
+        <img className='logos-circle' src={TicketLogo} alt="" />
        </div>
         <h3 className='statname'>Total Tickets</h3>
         <h3 className='statvalue'>{totalTickets}</h3>

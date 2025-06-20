@@ -1,3 +1,9 @@
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 :root{
     --faded-purple:#D9D1FF;
     --button-color: #634AFF;
@@ -6,13 +12,18 @@
 }
 
 .circle{
-    height: 60px;
-    width: 60px;
-    background-color: var(--faded-purple);
+    height: 50px;
+    width: 50px;
+    background-color: #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.logos-circle{
+    width: 25px;
+    height: 25px;
 }
 
 
@@ -31,7 +42,7 @@
 }
 
 .statname{
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 18px; 
     font-weight: 500;
 }
@@ -40,3 +51,5 @@
     font-size: 22px;
     font-weight: 600;
 }
+
+

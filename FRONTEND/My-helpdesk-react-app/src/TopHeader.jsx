@@ -5,7 +5,7 @@ export const TopHeader = () => {
   return (
     <div className="topheader-div">
         <div className="left">
-          <h2>Welcome {user.firstname},</h2>
+          <h2 className='welcome-message'>Welcome {user.firstname},</h2>
         </div>
         <div className="right">
           {user.role === "superAdmin" &&(
