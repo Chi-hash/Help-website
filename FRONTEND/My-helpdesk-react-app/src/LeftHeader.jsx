@@ -87,6 +87,8 @@ export const LeftHeader = ({ isOpen, toggleSidebar }) => {
                        )}
                         <li><NavLink to="/manage-tickets/create-ticket">Create Ticket</NavLink></li>
                     </ul>
+
+                    <button className='logoutbutton' Logout>Log Out</button>
                 </div>
             </div>
         </div>
