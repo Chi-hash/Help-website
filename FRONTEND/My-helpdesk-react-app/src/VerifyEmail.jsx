@@ -13,6 +13,7 @@ const VerifyEmail = () => {
 
         const token = searchParams.get("token");
         const email = searchParams.get("email");
+         const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
         console.log('Token:', token);
         console.log('Email:', email);
@@ -23,7 +24,7 @@ const VerifyEmail = () => {
             return;
         }
 
-        const verifyUrl = `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email?token=${token}&email=${email}`;
+        const verifyUrl = `${backendUrl}/api/auth/verify-email?token=${token}&email=${email}`;
         console.log('Verification URL:', verifyUrl);
 
         axios
@@ -33,7 +34,7 @@ const VerifyEmail = () => {
                 setStatus(res.data.message);
                 setTimeout(() => {
                     console.log('Navigating to /login');
-                    navigate("/"); // Changed to /login for clarity
+                    navigate("/"); 
                 }, 3000);
             })
             .catch((err) => {

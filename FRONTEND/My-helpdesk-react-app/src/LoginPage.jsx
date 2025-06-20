@@ -26,11 +26,15 @@ export const LoginPage = () => {
 
       const { token, user } = res.data;
 
-      // Save token and user info
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+     
+      localStorage.setItem("user", JSON.stringify(
+        {
+          ...user,
+          token
+        }
+      ));
       
-console.log("Token being sent:", token);
+console.log("Token being sent:", user.token);
 
       console.log("User logged in:", user);
 console.log("Redirecting to dashboard:", user.role);

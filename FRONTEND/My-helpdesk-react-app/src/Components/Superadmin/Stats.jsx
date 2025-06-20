@@ -5,8 +5,9 @@ import { TotalUsers } from '../StatInfo/TotalUsers';
 export const Stats = () => {
      const [stats, setStats] = useState(null);
 
+console.log("Raw localStorage user:", localStorage.getItem("user"));
   const token = JSON.parse(localStorage.getItem("user") || "{}")?.token;
-
+   console.log(token);
   useEffect(() => {
     const fetchStats = async () => {
       try {
