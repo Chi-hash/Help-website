@@ -19,7 +19,7 @@ async function createSuperAdmin() {
     const existingAdmin = await User.findOne({ email: "medline.nkenchor@gmail.com" });
 
     if (existingAdmin) {
-      console.log("⚠️ Super Admin already exists");
+      console.log("Super Admin already exists");
     } else {
       const hashedPassword = await bcrypt.hash("SuperSecurePassword123!", 10);
 
@@ -33,10 +33,10 @@ async function createSuperAdmin() {
       });
 
       await superAdmin.save();
-      console.log("✅ Super Admin created successfully");
+      console.log(" Super Admin created successfully");
     }
   } catch (error) {
-    console.error("❌ Error creating Super Admin:", error.message);
+    console.error(" Error creating Super Admin:", error.message);
   } finally {
     mongoose.disconnect();
   }

@@ -79,7 +79,11 @@ export const registerUser = async (req, res) => {
 
 
 export const verifyEmail = async (req, res) => {
-    const { token, email } = req.query;
+ const { token, email } = req.query;
+console.log("Raw query params:", req.query);
+console.log("Token length:", token?.length);
+console.log("Email format:", email);
+   
 
     try {
         console.log(" Incoming verification request:", { email, token });
