@@ -1,6 +1,6 @@
 import React from 'react';
-import { TopHeader } from '../../TopHeader'
-import { LeftHeader } from '../../LeftHeader'
+import { TopHeader } from '../../TopHeader';
+import { LeftHeader } from '../../LeftHeader';
 
 export const Reports = () => {
     return (

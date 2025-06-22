@@ -1,6 +1,8 @@
 import React from 'react';
 import { TopHeader } from '../../TopHeader'
 import { LeftHeader } from '../../LeftHeader'
+import { MyTicketStats } from './MyTicketStats';
+
 export const MyTickets = () => {
     return (
         <section id="dashboardsection">
@@ -9,7 +11,7 @@ export const MyTickets = () => {
             </div>
             <div className="right">
                 <TopHeader />
-                {/* Add your main content here */}
+                <MyTicketStats />
             </div>
         </section>
     );

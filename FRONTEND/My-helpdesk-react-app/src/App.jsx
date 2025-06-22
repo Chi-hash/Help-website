@@ -11,7 +11,7 @@ import {ManageUsers} from './Components/Superadmin/ManageUsers'
 import { MyTickets } from './Components/Superadmin/MyTickets';
 import { AllTickets } from './Components/Superadmin/AllTickets';
 import { TicketNotes } from './Components/Superadmin/TicketNotes';
-import { CreateTicket } from './Components/Superadmin/CreateTicket';
+import { CreateTicket } from './CreateTicket';
 import { Reports } from './Components/Superadmin/Reports';
 import VerifyNotice from './VerifyNotice';
 import VerifyEmail from './VerifyEmail';

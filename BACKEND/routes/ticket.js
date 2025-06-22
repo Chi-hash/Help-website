@@ -7,7 +7,8 @@ import {
   openTicket,
   startProgressTicket,
   resolveTicket,
-  closeTicket
+  closeTicket,
+  getMyTicketStats
 } from '../controllers/ticketController.js';
 import upload from '../middlewares/uploads.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
@@ -20,6 +21,9 @@ router.post("/", authMiddleware, upload.array('attachments'), createTicket);
 
 // Get all tickets
 router.get('/', authMiddleware, getAllTickets);
+
+// Get my ticket stats
+router.get('/my-stats', authMiddleware, getMyTicketStats);
 
 // Assign ticket
 router.put("/assign", authMiddleware, assignTicket);

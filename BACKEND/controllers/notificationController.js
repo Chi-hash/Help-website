@@ -141,6 +141,31 @@ export const testEmailConfig = async (req, res) => {
   }
 };
 
+// Create test notification (for development/testing)
+export const createTestNotification = async (req, res) => {
+  try {
+    const { message = 'This is a test notification', type = 'test', roleVisibleTo = ['superAdmin', 'admin', 'it', 'staff'] } = req.body;
+    
+    const testNotification = new Notification({
+      message,
+      type,
+      createdBy: req.user._id,
+      roleVisibleTo,
+    });
+
+    await testNotification.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Test notification created successfully',
+      notification: testNotification
+    });
+  } catch (error) {
+    console.error('Error creating test notification:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 // Get notifications for the current user
 export const getUserNotifications = async (req, res) => {
   try {

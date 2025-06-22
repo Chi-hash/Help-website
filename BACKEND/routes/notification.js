@@ -8,6 +8,7 @@ import {
   getNotificationStats,
   testEmail,
   testEmailConfig,
+  createTestNotification,
 } from '../controllers/notificationController.js';
 import  authMiddleware  from '../middlewares/authMiddleware.js';
 import  adminMiddleware  from '../middlewares/adminMiddleware.js';
@@ -22,6 +23,9 @@ router.post('/test-email', testEmail);
 
 // All routes require authentication
 router.use(authMiddleware);
+
+// Create test notification (for development/testing)
+router.post('/test', createTestNotification);
 
 // Get user's notifications
 router.get('/user', getUserNotifications);
