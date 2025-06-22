@@ -1,6 +1,7 @@
 import React from 'react';
 import { LeftHeader } from '../../LeftHeader'
 import { TopHeader } from '../../TopHeader'
+import { AllTicketstat } from './AllTicketstat';
 
 export const AllTickets = () => {
     return (
@@ -10,7 +11,7 @@ export const AllTickets = () => {
             </div>
             <div className="right">
                 <TopHeader />
-                {/* Add your main content here */}
+                <AllTicketstat/>
             </div>
         </section>
     );

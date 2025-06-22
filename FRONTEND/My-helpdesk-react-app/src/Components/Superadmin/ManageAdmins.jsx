@@ -1,8 +1,11 @@
 import React from 'react';
 import { LeftHeader } from '../../LeftHeader'
 import { TopHeader } from '../../TopHeader'
+import { ManageAdminstat } from './ManageAdminstat';
+
 
 export const ManageAdmins = () => {
+    
     return (
         <section id="dashboardsection">
             <div className="left">
@@ -10,7 +13,8 @@ export const ManageAdmins = () => {
             </div>
             <div className="right">
                 <TopHeader />
-                {/* Add your main content here */}
+                <ManageAdminstat/>
+               
             </div>
         </section>
     );

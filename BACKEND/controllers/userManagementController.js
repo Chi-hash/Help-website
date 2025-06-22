@@ -36,7 +36,7 @@ export const createUser = async (req, res) => {
 
     await newUser.save();
 
-    // Notification to the new user (welcome email)
+    // Notification to the new user 
     await createNotification({
       message: `Welcome to HELP! Your account has been created. You can now log in and start using the system.`,
       type: "account-created",
@@ -46,7 +46,7 @@ export const createUser = async (req, res) => {
       link: `${process.env.CLIENT_URL}/login`,
     });
 
-    // Notification to admins/superAdmins (for monitoring)
+    // Notification to admins/superAdmins
     await createNotification({
       message: `New ${role} user account created for ${firstname} ${lastname} (${email})`,
       type: "user-created",
@@ -97,7 +97,7 @@ export const updateUserStatus = async (req, res) => {
       link: `${process.env.CLIENT_URL}/profile`,
     });
 
-    // Notification to admins/superAdmins (for monitoring)
+    // Notification to admins/superAdmins 
     await createNotification({
       message: `User ${user.firstname} ${user.lastname} (${user.email}) status changed from ${oldStatus} to ${status}`,
       type: "user-status-change",
@@ -148,7 +148,7 @@ export const updateUserRole = async (req, res) => {
       link: `${process.env.CLIENT_URL}/profile`,
     });
 
-    // Notification to admins/superAdmins (for monitoring)
+    // Notification to admins/superAdmins 
     await createNotification({
       message: `User ${user.firstname} ${user.lastname} (${user.email}) role changed from ${oldRole} to ${role}`,
       type: "user-role-change",

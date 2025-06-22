@@ -30,7 +30,8 @@
 .allstats{
     display: grid;
     gap: 5px;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    margin-top: 5px;
     
 }
 
@@ -38,11 +39,11 @@
     height: 150px;
     background-color: var(--backgrounds);
     border-radius: 5px;
-    padding: 14px 12px;
+    padding: 14px 18px;
 }
 
 .statname{
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 18px; 
     font-weight: 500;
 }

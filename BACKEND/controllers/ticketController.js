@@ -157,27 +157,210 @@ export const assignTicket = async (req, res) => {
   }
 };
 
+export const openTicket = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+    const ticket = await Ticket.findById(ticketId).populate("createdBy assignedTo");
+    if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
+
+    const oldStatus = ticket.status;
+    ticket.status = "Open";
+    await ticket.save();
+
+    // Notification to the person who opened the ticket
+    await createNotification({
+      message: `You reopened ticket ${ticket.ticketNumber}: ${ticket.subject}`,
+      type: "ticket-reopen",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: [req.user.role],
+      specificUsers: [req.user._id],
+      link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+    });
+
+    // Notification to the ticket creator (if different from who opened it)
+    if (ticket.createdBy._id.toString() !== req.user._id.toString()) {
+      await createNotification({
+        message: `Your ticket ${ticket.ticketNumber} has been reopened by ${req.user.firstname} ${req.user.lastname}`,
+        type: "ticket-reopen",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: [ticket.createdBy.role],
+        specificUsers: [ticket.createdBy._id],
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to the assigned user (if different from who opened it and from creator)
+    if (ticket.assignedTo && 
+        ticket.assignedTo._id.toString() !== req.user._id.toString() && 
+        ticket.assignedTo._id.toString() !== ticket.createdBy._id.toString()) {
+      await createNotification({
+        message: `Ticket ${ticket.ticketNumber} has been reopened by ${req.user.firstname} ${req.user.lastname}`,
+        type: "ticket-reopen",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: [ticket.assignedTo.role],
+        specificUsers: [ticket.assignedTo._id],
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to admins, IT, superAdmin (for monitoring)
+    await createNotification({
+      message: `Ticket ${ticket.ticketNumber} has been reopened by ${req.user.firstname} ${req.user.lastname}`,
+      type: "ticket-reopen",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: ["admin", "IT", "superAdmin"],
+      link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
+    });
+
+    res.status(200).json({ 
+      success: true,
+      message: 'Ticket opened successfully', 
+      ticket,
+      oldStatus,
+      newStatus: ticket.status
+    });
+  } catch (error) {
+    console.error('Error opening ticket:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const startProgressTicket = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+    const ticket = await Ticket.findById(ticketId).populate("createdBy assignedTo");
+    if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
+
+    const oldStatus = ticket.status;
+    ticket.status = "InProgress";
+    await ticket.save();
+
+    // Notification to the person who started progress
+    await createNotification({
+      message: `You started working on ticket ${ticket.ticketNumber}: ${ticket.subject}`,
+      type: "ticket-progress",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: [req.user.role],
+      specificUsers: [req.user._id],
+      link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+    });
+
+    // Notification to the ticket creator
+    if (ticket.createdBy._id.toString() !== req.user._id.toString()) {
+      await createNotification({
+        message: `Work has started on your ticket ${ticket.ticketNumber} by ${req.user.firstname} ${req.user.lastname}`,
+        type: "ticket-progress",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: [ticket.createdBy.role],
+        specificUsers: [ticket.createdBy._id],
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to admins, IT, superAdmin (for monitoring)
+    await createNotification({
+      message: `Work started on ticket ${ticket.ticketNumber} by ${req.user.firstname} ${req.user.lastname}`,
+      type: "ticket-progress",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: ["admin", "IT", "superAdmin"],
+      link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
+    });
+
+    res.status(200).json({ 
+      success: true,
+      message: 'Ticket progress started successfully', 
+      ticket,
+      oldStatus,
+      newStatus: ticket.status
+    });
+  } catch (error) {
+    console.error('Error starting ticket progress:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const resolveTicket = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+    const ticket = await Ticket.findById(ticketId).populate("createdBy assignedTo");
+    if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
+
+    const oldStatus = ticket.status;
+    ticket.status = "Resolved";
+    await ticket.save();
+
+    // Notification to the person who resolved the ticket
+    await createNotification({
+      message: `You resolved ticket ${ticket.ticketNumber}: ${ticket.subject}`,
+      type: "ticket-resolved",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: [req.user.role],
+      specificUsers: [req.user._id],
+      link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+    });
+
+    // Notification to the ticket creator
+    if (ticket.createdBy._id.toString() !== req.user._id.toString()) {
+      await createNotification({
+        message: `Your ticket ${ticket.ticketNumber} has been resolved by ${req.user.firstname} ${req.user.lastname}`,
+        type: "ticket-resolved",
+        createdBy: req.user._id,
+        ticketId: ticket._id,
+        roleVisibleTo: [ticket.createdBy.role],
+        specificUsers: [ticket.createdBy._id],
+        link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
+      });
+    }
+
+    // Notification to admins, IT, superAdmin (for monitoring)
+    await createNotification({
+      message: `Ticket ${ticket.ticketNumber} has been resolved by ${req.user.firstname} ${req.user.lastname}`,
+      type: "ticket-resolved",
+      createdBy: req.user._id,
+      ticketId: ticket._id,
+      roleVisibleTo: ["admin", "IT", "superAdmin"],
+      link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
+    });
+
+    res.status(200).json({ 
+      success: true,
+      message: 'Ticket resolved successfully', 
+      ticket,
+      oldStatus,
+      newStatus: ticket.status
+    });
+  } catch (error) {
+    console.error('Error resolving ticket:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 export const closeTicket = async (req, res) => {
   try {
     const { ticketId } = req.params;
-    const userId = req.user._id;
-
-    const ticket = await Ticket.findById(ticketId).populate('createdBy');
+    const ticket = await Ticket.findById(ticketId).populate("createdBy assignedTo");
     if (!ticket) return res.status(404).json({ message: 'Ticket not found' });
 
-    ticket.status = 'Closed';
+    const oldStatus = ticket.status;
+    ticket.status = "Closed";
     await ticket.save();
 
-    const user = await User.findById(userId);
-
-    // Notification to the person who closed the ticket (themselves)
+    // Notification to the person who closed the ticket
     await createNotification({
-      message: `You closed ticket ${ticket.ticketNumber}`,
+      message: `You closed ticket ${ticket.ticketNumber}: ${ticket.subject}`,
       type: "ticket-close",
       createdBy: req.user._id,
       ticketId: ticket._id,
-      roleVisibleTo: [req.user.role], 
-      specificUsers: [req.user._id], // Send email to the person who closed it
+      roleVisibleTo: [req.user.role],
+      specificUsers: [req.user._id],
       link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
     });
 
@@ -189,21 +372,22 @@ export const closeTicket = async (req, res) => {
         createdBy: req.user._id,
         ticketId: ticket._id,
         roleVisibleTo: [ticket.createdBy.role],
-        specificUsers: [ticket.createdBy._id], // Send email to the ticket creator
+        specificUsers: [ticket.createdBy._id],
         link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
       });
     }
 
     // Notification to the assigned user (if different from who closed it and from creator)
-    if (ticket.assignedTo.toString() !== req.user._id.toString() && 
-        ticket.assignedTo.toString() !== ticket.createdBy._id.toString()) {
+    if (ticket.assignedTo && 
+        ticket.assignedTo._id.toString() !== req.user._id.toString() && 
+        ticket.assignedTo._id.toString() !== ticket.createdBy._id.toString()) {
       await createNotification({
         message: `Ticket ${ticket.ticketNumber} has been closed by ${req.user.firstname} ${req.user.lastname}`,
         type: "ticket-close",
         createdBy: req.user._id,
         ticketId: ticket._id,
-        roleVisibleTo: ["admin", "IT", "superAdmin"],
-        specificUsers: [ticket.assignedTo], // Send email to the assigned user
+        roleVisibleTo: [ticket.assignedTo.role],
+        specificUsers: [ticket.assignedTo._id],
         link: `${process.env.CLIENT_URL}/my-tickets/${ticket._id}`,
       });
     }
@@ -218,10 +402,16 @@ export const closeTicket = async (req, res) => {
       link: `${process.env.CLIENT_URL}/tickets/${ticket._id}`,
     });
 
-    res.status(200).json({ message: 'Ticket closed successfully' });
+    res.status(200).json({ 
+      success: true,
+      message: 'Ticket closed successfully',
+      ticket,
+      oldStatus,
+      newStatus: ticket.status
+    });
   } catch (error) {
     console.error('Error closing ticket:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
