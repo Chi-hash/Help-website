@@ -142,6 +142,15 @@ export const loginUser = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      // Notify failed login
+      await Notification.create({
+        message: `${email} failed to log in (invalid credentials).`,
+        type: "login",
+        createdBy: user ? user._id : undefined,
+        roleVisibleTo: ["superAdmin"],
+        ip: req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+        success: false
+      });
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -163,6 +172,8 @@ export const loginUser = async (req, res) => {
       type: "login",
       createdBy: user._id,
       roleVisibleTo: ["superAdmin"],
+      ip: req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+      success: true
     });
 
     res.status(200).json({

@@ -144,17 +144,18 @@ export const testEmailConfig = async (req, res) => {
 // Create test notification (for development/testing)
 export const createTestNotification = async (req, res) => {
   try {
-    const { message = 'This is a test notification', type = 'test', roleVisibleTo = ['superAdmin', 'admin', 'it', 'staff'] } = req.body;
-    
+    const { message = 'This is a test notification', type = 'test', roleVisibleTo = ['superAdmin', 'admin', 'it', 'staff'], ip, success } = req.body;
     const testNotification = new Notification({
       message,
       type,
       createdBy: req.user._id,
       roleVisibleTo,
+      ip: ip || req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+      success: typeof success === 'boolean' ? success : undefined
     });
-
     await testNotification.save();
-
+    // Populate createdBy with role for immediate response
+    await testNotification.populate('createdBy', 'firstname lastname role profilePic');
     res.status(201).json({
       success: true,
       message: 'Test notification created successfully',
@@ -328,6 +329,25 @@ export const getNotificationStats = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching notification stats:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// Get latest notifications for dashboard bottom bar
+export const getLatestNotifications = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 6;
+    const notifications = await Notification.find()
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .populate('createdBy', 'firstname lastname role profilePic');
+
+    res.status(200).json({
+      success: true,
+      notifications,
+    });
+  } catch (error) {
+    console.error('Error fetching latest notifications:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };

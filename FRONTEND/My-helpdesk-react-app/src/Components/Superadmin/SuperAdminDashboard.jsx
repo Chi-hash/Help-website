@@ -6,6 +6,7 @@ import { TotalDepartments } from '../StatInfo/TotalDepartments';
 import { TotalTickets } from '../StatInfo/TotalTickets';
 import { TotalUsers } from '../StatInfo/TotalUsers';
 import { Stats } from './Stats';
+import { NotificationBottom } from './NotificationBottom';
 
 
 
@@ -19,6 +20,8 @@ export const SuperAdminDashboard = () => {
             <div className="right">
                 <TopHeader />
                 <Stats/>
+                <NotificationBottom/>
+                
                 
 
             </div>

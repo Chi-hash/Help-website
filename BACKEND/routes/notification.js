@@ -9,6 +9,7 @@ import {
   testEmail,
   testEmailConfig,
   createTestNotification,
+  getLatestNotifications,
 } from '../controllers/notificationController.js';
 import  authMiddleware  from '../middlewares/authMiddleware.js';
 import  adminMiddleware  from '../middlewares/adminMiddleware.js';
@@ -29,6 +30,9 @@ router.post('/test', createTestNotification);
 
 // Get user's notifications
 router.get('/user', getUserNotifications);
+
+// Add latest notifications route
+router.get('/latest', getLatestNotifications);
 
 // Mark notification as read
 router.patch('/:notificationId/read', markNotificationAsRead);

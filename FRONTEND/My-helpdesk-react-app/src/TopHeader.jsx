@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Edit, LogOut, User, Settings } from 'lucide-react';
 import { getAuthToken, getUserData, handleAuthError } from './utils/auth.js';
+import { SettingsModal } from './Components/Superadmin/SettingsModal';
 
 export const TopHeader = () => {
   const [showProfilePopup, setShowProfilePopup] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const fileInputRef = useRef(null);
   const popupRef = useRef(null);
 
@@ -216,7 +218,7 @@ export const TopHeader = () => {
               </div>
 
               <div className="profile-actions">
-                <button className="action-btn settings-btn">
+                <button className="action-btn settings-btn" onClick={() => setShowSettingsModal(true)}>
                   <Settings size={16} />
                   Settings
                 </button>
@@ -232,6 +234,9 @@ export const TopHeader = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Settings Modal */}
+      <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} user={user} />
 
       {/* Logout Modal */}
       <AnimatePresence>

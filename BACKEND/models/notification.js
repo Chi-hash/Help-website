@@ -9,6 +9,8 @@ const notificationSchema = new mongoose.Schema(
     ticketId: { type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }, // Link to ticket
     seenBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     roleVisibleTo: [String], // e.g. ['superAdmin', 'admin']
+    ip: { type: String },
+    success: { type: Boolean },
     readBy: [
       {
         user: {
