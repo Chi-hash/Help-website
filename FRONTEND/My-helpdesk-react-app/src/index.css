@@ -4,6 +4,15 @@
   --faded-purple: #D9D1FF;
   --button-color: #634AFF;
   --backgrounds: #C4BCFF;
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --shadow-light: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -17,9 +26,11 @@
   scrollbar-width: none;  /* Firefox */
   -ms-overflow-style: none;  /* IE 10+ */
 }
+
 body{
     height: 100vh;
     overflow: scroll;
+    max-width: 100%;
 }
 
 *::-webkit-scrollbar {
@@ -166,3 +177,22 @@ input {
   display: flex;
   gap: 30px;
 }
+
+
+.testdiv{
+  position: fixed;
+  top: 0;
+  margin-top: 5px;
+   width: calc(100% - 235px);
+    z-index: 90000;
+}
+
+.statss{
+  margin-top: 60px;
+  overflow: hidden;
+}
+
+
+
+
+

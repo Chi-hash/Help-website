@@ -3,6 +3,7 @@ import { TotalSuspendedAdmins } from '../StatInfo/TotalSuspendedAdmins'
 import { useEffect, useState } from 'react'
 import { getAuthToken, handleAuthError } from '../../utils/auth.js';
 import { TotalActiveAdmins } from '../StatInfo/TotalActiveAdmins.jsx';
+import { TotalAdmins } from '../StatInfo/TotalAdmins.jsx';
 
 
 export const ManageAdminstat = () => {
@@ -45,6 +46,7 @@ export const ManageAdminstat = () => {
   return (
     <>
       <div className="allstats">
+        <TotalAdmins totalAdmins={stats.totalAdmins}/>
         <TotalSuspendedAdmins suspendedAdmins={stats.suspendedAdmins} />
       <TotalActiveAdmins activeAdmins={stats.activeAdmins}/>
       </div>

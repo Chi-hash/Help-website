@@ -68,10 +68,10 @@ console.log("Redirecting to dashboard:", user.role);
         <form onSubmit={handleLogin}>
           <h1 className='login'>Log In</h1>
 
-          {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
+          {error && <div className="error-message">{error}</div>}
 
           <div className="emaildiv div">
-            <p className='login-text'>Email Address</p>
+            <label className='login-text'>Email Address</label>
             <div className="email-logo input-logo">
               <input 
                 type="email" 
@@ -79,6 +79,7 @@ console.log("Redirecting to dashboard:", user.role);
                 id="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} 
+                placeholder="Enter your email address"
                 required 
               />
               {/* email icon */}
@@ -89,14 +90,15 @@ console.log("Redirecting to dashboard:", user.role);
           </div>
 
           <div className="passworddiv div">
-            <p className='login-text'>Password</p>
-            <div className="password-logo input-logo" style={{ position: "relative" }}>
+            <label className='login-text'>Password</label>
+            <div className="password-logo input-logo">
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
                 required
               />
               {/* password lock icon */}
@@ -105,7 +107,7 @@ console.log("Redirecting to dashboard:", user.role);
               </svg>
 
               {/* password toggle icon */}
-              <div onClick={togglePassword} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}>
+              <div className="eye-icon" onClick={togglePassword}>
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </div>
             </div>

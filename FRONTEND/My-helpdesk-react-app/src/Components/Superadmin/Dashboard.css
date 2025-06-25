@@ -1,64 +1,65 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-:root{
-    --faded-purple:#D9D1FF;
-    --button-color: #634AFF;
-    --backgrounds: #C4BCFF;
-    --hover-color:var(--hover-color);
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.circle{
-    height: 50px;
-    width: 50px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+:root {
+  --faded-purple: #D9D1FF;
+  --button-color: #634AFF;
+  --backgrounds: #C4BCFF;
+  --hover-color: var(--hover-color);
 }
 
-.logos-circle{
-    width: 25px;
-    height: 25px;
+.circle {
+  height: 50px;
+  width: 50px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logos-circle {
+  width: 25px;
+  height: 25px;
 }
 
 
-.allstats{
-    display: grid;
-    gap: 5px;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    margin-top: 5px;
-    
+.allstats {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin-top: 5px;
+
 }
 
-.stat{
-    height: 150px;
-    background-color: var(--backgrounds);
-    border-radius: 5px;
-    padding: 14px 18px;
+.stat {
+  height: 150px;
+  background-color: var(--backgrounds);
+  border-radius: 5px;
+  padding: 14px 18px;
 }
 
-.statname{
-    margin-top: 15px;
-    font-size: 18px; 
-    font-weight: 500;
+.statname {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
-.statvalue{
-    font-size: 22px;
-    font-weight: 600;
+.statvalue {
+  font-size: 22px;
+  font-weight: 600;
 }
 
 
 /* notification side */
-.notification-tr{
-    padding: 5px;
-    border-radius: 10px;
-    transition: ease all 0.5s;
-    cursor: pointer;
+.notification-tr {
+  padding: 5px;
+  border-radius: 10px;
+  transition: ease all 0.5s;
+  cursor: pointer;
 }
 
 
@@ -67,41 +68,45 @@ tr:nth-child(even) {
 }
 
 
-tr:nth-child(odd):hover{
-    background-color: rgb(230, 230, 230);
-}
-tr:nth-child(even):hover{
-   background-color: #d9d1ffa2;
-}
-.headers{
-pointer-events: none;
+tr:nth-child(odd):hover {
+  background-color: rgb(230, 230, 230);
 }
 
-.rounded-row1{
-   border-top-left-radius: 5px;
-   border-bottom-left-radius: 5px;
-   padding-left: 30px;
+tr:nth-child(even):hover {
+  background-color: #d9d1ffa2;
 }
-.rounded-row2{
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding-right: 30px;
+
+.headers {
+  pointer-events: none;
 }
-.menuicon{
-    padding: 0px 8px;
-    border-radius: 50%;
+
+.rounded-row1 {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding-left: 30px;
 }
-.menuicon:hover{
-        background-color:#bfbdc6 ;
+
+.rounded-row2 {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding-right: 30px;
+}
+
+.menuicon {
+  padding: 0px 8px;
+  border-radius: 50%;
+}
+
+.menuicon:hover {
+  background-color: #bfbdc6;
 }
 
 .topheader-div {
   background: var(--backgrounds);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.right {
-}
+.right {}
 
 .allstats {
   display: grid;
@@ -115,6 +120,7 @@ pointer-events: none;
     width: 100%;
     left: 0;
   }
+
   .right {
     margin-left: 0;
     padding-top: 70px;
@@ -122,3 +128,221 @@ pointer-events: none;
 }
 
 
+/* admin list and search */
+.search-list-container .admin-list {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.search-list-container .top-admin-list {
+  margin-top: 20px;
+  margin-bottom: 25px;
+  padding: 0 20px;
+}
+
+.search-list-container .top-admin-list p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.search-list-container .bottom-admin-list .input-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0px 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  width: 100%;
+  /* margin: 0 20px 25px 20px; */
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-list-container .bottom-admin-list .input-search:has(input:focus) {
+  border: 1px solid var(--button-color);
+  box-shadow: 0 0 0 3px rgba(99, 74, 255, 0.1);
+}
+
+.search-list-container .bottom-admin-list .input-search:has(input:hover) {
+  border: 1px solid var(--button-color);
+}
+
+.search-list-container .bottom-admin-list .input-search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.search-list-container .bottom-admin-list .input-search input::placeholder {
+  color: #6c757d;
+}
+
+.search-list-container .bottom-admin-list .table-admins {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+  width: 100%;
+  margin-top: 20px;
+
+
+    max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-list-container .bottom-admin-list .table-admins table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.search-list-container .bottom-admin-list .table-admins thead {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 2px solid #dee2e6;
+}
+
+.search-list-container .bottom-admin-list .table-admins th {
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #dee2e6;
+
+   position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.search-list-container .bottom-admin-list .table-admins td {
+  padding: 5px;
+  border-bottom: 1px solid #f1f3f4;
+  vertical-align: middle;
+}
+
+.search-list-container .bottom-admin-list .table-admins tbody tr {
+  transition: all 0.2s ease;
+}
+
+.search-list-container .bottom-admin-list .table-admins tbody tr:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-list-container .bottom-admin-list .table-admins tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.search-list-container .bottom-admin-list .first-column {
+  gap: 12px;
+  align-items: center;
+}
+
+.search-list-container .bottom-admin-list .first-column p {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+  margin: 0;
+}
+
+.search-list-container .bottom-admin-list .flex {
+  display: flex;
+  align-items: center;
+}
+
+.search-list-container .bottom-admin-list .actions {
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.search-list-container .bottom-admin-list .action-icon {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.search-list-container .bottom-admin-list .action-icon:hover {
+  opacity: 1;
+  background-color: #f1f3f4;
+  transform: scale(1.1);
+}
+
+/* Status badges */
+.search-list-container .bottom-admin-list .status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+/* Role styling */
+.search-list-container .bottom-admin-list .role-text {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+/* Email styling */
+.search-list-container .bottom-admin-list .email-text {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* Department styling */
+.search-list-container .bottom-admin-list .department-text {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Empty state styling */
+.search-list-container .bottom-admin-list .empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  background: #f8f9fa;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .search-list-container .bottom-admin-list .table-admins {
+    margin: 0 10px 15px 10px;
+    border-radius: 8px;
+  }
+  
+  .search-list-container .bottom-admin-list .table-admins th,
+  .search-list-container .bottom-admin-list .table-admins td {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+  
+  .search-list-container .bottom-admin-list .first-column {
+    gap: 8px;
+  }
+  
+  .search-list-container .bottom-admin-list .actions {
+    gap: 8px;
+  }
+  
+  .search-list-container .bottom-admin-list .action-icon {
+    width: 16px;
+    height: 16px;
+    padding: 4px;
+  }
+}

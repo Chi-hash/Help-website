@@ -1,10 +1,6 @@
 import React from 'react';
 import {LeftHeader} from "../../LeftHeader";
 import { TopHeader } from '../../TopHeader';
-import { TotalAdmins } from '../StatInfo/TotalAdmins';
-import { TotalDepartments } from '../StatInfo/TotalDepartments';
-import { TotalTickets } from '../StatInfo/TotalTickets';
-import { TotalUsers } from '../StatInfo/TotalUsers';
 import { Stats } from './Stats';
 import { NotificationBottom } from './NotificationBottom';
 
@@ -18,8 +14,12 @@ export const SuperAdminDashboard = () => {
                 <LeftHeader />
             </div>
             <div className="right">
-                <TopHeader />
-                <Stats/>
+               <div className="testdiv">
+                 <TopHeader />
+               </div>
+               <div className="statss">
+                 <Stats/>
+               </div>
                 <NotificationBottom/>
                 
                 

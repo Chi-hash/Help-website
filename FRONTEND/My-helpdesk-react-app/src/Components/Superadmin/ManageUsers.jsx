@@ -2,6 +2,7 @@ import React from 'react';
 import { TopHeader } from '../../TopHeader'
 import { LeftHeader } from '../../LeftHeader'
 import { ManageUserstat } from './ManageUserstat';
+import { ManageUsersSearchList } from './ManageUsersSearchList';
 
 export const ManageUsers = () => {
     return (
@@ -12,6 +13,7 @@ export const ManageUsers = () => {
             <div className="right">
                 <TopHeader />
                <ManageUserstat/>
+               <ManageUsersSearchList/>
             </div>
         </section>
     );

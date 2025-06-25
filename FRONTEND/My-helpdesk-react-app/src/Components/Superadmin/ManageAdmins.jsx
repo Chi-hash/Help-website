@@ -3,6 +3,7 @@ import { LeftHeader } from '../../LeftHeader'
 import { TopHeader } from '../../TopHeader'
 import { ManageAdminstat } from './ManageAdminstat';
 import { NotificationBottom } from './NotificationBottom';
+import { ManageAdminsSearchList } from './ManageAdminsSearchList';
 
 
 export const ManageAdmins = () => {
@@ -15,6 +16,7 @@ export const ManageAdmins = () => {
             <div className="right">
                 <TopHeader />
                 <ManageAdminstat/>
+                <ManageAdminsSearchList/>
                 
                
             </div>
